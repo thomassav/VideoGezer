@@ -7,8 +7,6 @@ import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.kernel.impl.util.StringLogger;
 
-System.out.println("test");
-
 public class Bdd {
 	private static GraphDatabaseService bdd = null;
         private static ExecutionEngine requete;
