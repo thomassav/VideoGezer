@@ -103,6 +103,7 @@ public class Video {
      Ajout d'un video après son upload
      */
     public static void ajouterVideo(Profil p, Video v, String[] mots) {
+        System.out.println("la");
         GraphDatabaseService graphDb = Bdd.getBdd();
         try (Transaction tx = graphDb.beginTx()) {
             ExecutionEngine requete = new ExecutionEngine(graphDb, StringLogger.SYSTEM);
