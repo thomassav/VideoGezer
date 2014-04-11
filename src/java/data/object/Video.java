@@ -37,29 +37,30 @@ public class Video {
     private long id;
     private String nomVideo;
     private String emplacement;
-    private String nomBdd;
+    private String idBdd;
     private int nbVues;
     private Date dateUpload;
     private List<String> tableauResolution;
+
     //private Commentaire commentaire;
     public Video() {
 
     }
 
-    public Video(String n, String e, String nomBdd) {
+    public Video(String n, String e, String idBdd) {
         nomVideo = n;
-        emplacement = "video/" + nomBdd;
-        this.nomBdd = nomBdd;
-        System.out.println(n + " " + emplacement + " " + nomBdd);
+        emplacement = "video/" + idBdd;
+        this.idBdd = idBdd;
+        System.out.println(n + " " + emplacement + " " + idBdd);
     }
 
-    public Video(long id, String n, String e, String nomBdd) {
+    public Video(long id, String n, String e, String idBdd) {
         this.id = id;
         nomVideo = n;
-        emplacement = "video/" + nomBdd;
-        this.nomBdd = nomBdd;
+        emplacement = "video/" + idBdd;
+        this.idBdd = idBdd;
         tableauResolution = new ArrayList<String>();
-        System.out.println(n + " " + emplacement + " " + nomBdd);
+        System.out.println(n + " " + emplacement + " " + idBdd);
     }
 
     public String getdateUpload() {
@@ -70,11 +71,12 @@ public class Video {
         return nomVideo;
     }
 
-    public int getnbVues(){
+    public int getnbVues() {
         return nbVues;
     }
-    public String getNomBdd() {
-        return nomBdd;
+
+    public String getidBdd() {
+        return idBdd;
     }
 
     public String getEmplacement() {
@@ -93,7 +95,6 @@ public class Video {
         this.id = Long.parseLong(id);
     }
 
-    
     public static int getNbVideo() {
         return nbVideo;
     }
@@ -108,13 +109,13 @@ public class Video {
             ExecutionResult result;
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("nom", v.nomVideo);
-            params.put("emplacement", "C:/Users/Ervin/Videos/VideoGezer/upload/" + v.nomBdd);
-            params.put("nomBdd", v.nomBdd);
-            result = requete.execute("MERGE (v:Video { nom: '" + v.nomVideo + "', emplacement:'C:/Users/Ervin/Videos/VideoGezer/upload/" + v.nomBdd + "' , nomBdd:'" + v.nomBdd + "', dateUpload:timestamp(), prive:false})RETURN v");
+            params.put("emplacement", "C:/Users/Ervin/Videos/VideoGezer/upload/" + v.idBdd);
+            params.put("idBdd", v.idBdd);
+            result = requete.execute("MERGE (v:Video { nom: '" + v.nomVideo + "', emplacement:'C:/Users/Ervin/Videos/VideoGezer/upload/" + v.idBdd + "' , idBdd:'" + v.idBdd + "', dateUpload:timestamp(), prive:false, nbVues:0})RETURN v");
             for (String mot : mots) {
                 if (mot.length() > 4) {
                     result = requete.execute("MERGE (k:KEYWORD {mot:'" + mot.toLowerCase() + "'}) return k");
-                    result = requete.execute("MATCH (v:Video {nom:'" + v.getNom() + "', emplacement:'C:/Users/Ervin/Videos/VideoGezer/upload/" + v.nomBdd + "' }),(k:KEYWORD {mot:'" + mot + "'}) CREATE (v)-[m:MOTCLE]->(k) return v,k");
+                    result = requete.execute("MATCH (v:Video {nom:'" + v.getNom() + "', emplacement:'C:/Users/Ervin/Videos/VideoGezer/upload/" + v.idBdd + "' }),(k:KEYWORD {mot:'" + mot + "'}) CREATE (v)-[m:MOTCLE]->(k) return v,k");
                 }
             }
             tx.success();
@@ -138,7 +139,7 @@ public class Video {
                     ExecutionResult result;
                     result = requete.execute("MERGE (k:Keyword {mot:'" + mot.toLowerCase() + "'}) return k");
                     //Enregistrer tous les mot en minuscule
-                    result = requete.execute("MATCH (v:Video {nom:'" + v.getNom() + "', emplacement:'C:/Users/Ervin/Videos/VideoGezer/upload/" + v.nomBdd + "' }),(k:Keyword {mot:'" + mot + "'}) CREATE (v)-[m:MOTCLE]->(k) return v,k");
+                    result = requete.execute("MATCH (v:Video {nom:'" + v.getNom() + "', emplacement:'C:/Users/Ervin/Videos/VideoGezer/upload/" + v.idBdd + "' }),(k:Keyword {mot:'" + mot + "'}) CREATE (v)-[m:MOTCLE]->(k) return v,k");
                     tx.success();
                     tx.close();
                     nbVideo++;
@@ -169,7 +170,7 @@ public class Video {
             if (mode.equals("aleatoire")) {
                 System.out.println("match (v:Video) " + conditionWhere(nom) + " return count(distinct v) as total");
                 result = requete.execute("match (v:Video) " + conditionWhere(nom) + " return count(distinct v) as total");
-            //String test = ressource1.next().;
+                //String test = ressource1.next().;
                 //System.out.println(ressource1.next());
                 long total = 0;
                 for (Map<String, Object> row : result) {
@@ -182,9 +183,9 @@ public class Video {
                 int random = (int) (Math.random() * (total - 1));
                 System.out.println(random);
                 recherche = "MATCH (v:Video) " + conditionWhere(nom) + " RETURN v SKIP " + random + " limit 5";
-            } else if(mode.equals("recommandation")){
+            } else if (mode.equals("recommandation")) {
                 recherche = "match (video:Video {dateUpload:1396114369398})-[:MOTCLE]->(stuff)<-[:MOTCLE]-(v:Video) where not (video)-[:MOTCLE]->(video)  return v, count(stuff) order by count(stuff) desc";
-            }else {
+            } else {
                 recherche = "MATCH (v:Video)-[m:MOTCLE]->(k:KEYWORD)" + conditionWhere(nom) + " RETURN v,type(m),count(m),count(v) " + order(tri);
             }
             //result = requete.execute("match (v:Video) where v.nom=~ '.*(?i)" + nom + ".*' RETURN v");
@@ -195,8 +196,8 @@ public class Video {
             for (Node node : IteratorUtil.asIterable(ressource)) {
                 System.out.println(node.getProperty("nom"));
                 System.out.println(node.getProperty("emplacement"));
-                System.out.println(node.getProperty("nomBdd"));
-                listVideo.add(new Video(node.getId(), (String) node.getProperty("nom"), (String) node.getProperty("emplacement"), (String) node.getProperty("nomBdd")));
+                System.out.println(node.getProperty("idBdd"));
+                listVideo.add(new Video(node.getId(), (String) node.getProperty("nom"), (String) node.getProperty("emplacement"), (String) node.getProperty("idBdd")));
             }
             System.out.println(listVideo.size());
             tx.success();
@@ -229,7 +230,7 @@ public class Video {
             for (Node node : IteratorUtil.asIterable(ressource)) {
                 v.nomVideo = (String) node.getProperty("nom");
                 v.emplacement = (String) node.getProperty("emplacement");
-                v.nomBdd = (String) node.getProperty("nomBdd");
+                v.idBdd = (String) node.getProperty("idBdd");
                 stamp = new Timestamp((Long) node.getProperty("dateUpload"));
                 v.dateUpload = new Date(stamp.getTime());
                 //v.nbVues = (int)(long) node.getProperty("nbVues");
@@ -275,23 +276,24 @@ public class Video {
     public static String requete(String condition) {
         return "match (v:Video) " + condition + " return count(distinct v) as total";
     }
-    
-    public void addVue(){
+
+    public void addVue() {
         nbVues++;
     }
-    
-    public int nbResolution(){
+
+    public int nbResolution() {
         //return tableauResolution.size();
         return 1;
     }
-    public static void ajouterVue(Video v){
+
+    public static void ajouterVue(Video v) {
         GraphDatabaseService graphDb = Bdd.getBdd();
         try (Transaction tx = graphDb.beginTx()) {
             ExecutionEngine requete = new ExecutionEngine(graphDb, StringLogger.SYSTEM);
             ExecutionResult result;
             System.out.println("Ajout des vues");
-            result = requete.execute("MATCH  (v:Video {nom:'"+v.nomVideo+"', nomBdd:'"+v.nomBdd+"'}) set v.nbVues = "+v.nbVues+" RETURN v");
-            System.out.println("MATCH  (v:Video {nom:'"+v.nomVideo+"', nomBdd:'"+v.nomBdd+"'}) set v.nbVues = "+v.nbVues+" RETURN v");
+            result = requete.execute("MATCH  (v:Video {nom:'" + v.nomVideo + "', idBdd:'" + v.idBdd + "'}) set v.nbVues = " + v.nbVues + " RETURN v");
+            System.out.println("MATCH  (v:Video {nom:'" + v.nomVideo + "', idBdd:'" + v.idBdd + "'}) set v.nbVues = " + v.nbVues + " RETURN v");
             tx.success();
             tx.close();
         } finally {

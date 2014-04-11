@@ -89,7 +89,7 @@ public class ServletUploadVideo extends HttpServlet {
         //Donner nom aléatoire à la vidéo + chemin de la video VideGezer/{nomUtilisateur}/nomVideo
         int numVideo = Video.getNbVideo();
         String nomBdd = numVideo+".mp4";
-        String emplacement = "C:\\Users\\Ervin\\Documents\\NetBeansProjects\\VideoGezer\\web\\video\\"+numVideo+".mp4";
+        String emplacement = "C:\\Users\\Ervin\\Documents\\NetBeansProjects\\VG\\web\\video\\"+numVideo+".mp4";
         try (FileOutputStream file = new FileOutputStream(emplacement)) {
             int i = 0;
             byte b[] = new byte[1024];

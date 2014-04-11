@@ -65,7 +65,7 @@
                 Date upload :<jsp:getProperty name="maVideo" property="dateUpload" />
                 <video id="home_video" controls preload="auto" poster="/img/poster.jpg" width="720" height="320" class="video-js vjs-default-skin">
                     <%  for(int i =0; i< maVideo.nbResolution();i++) { %>
-                        <source src="video/<jsp:getProperty name="maVideo" property="nomBdd" />?hd" type="video/mp4" data-res="HD" />
+                        <source src="video/<jsp:getProperty name="maVideo" property="idBdd" />?hd" type="video/mp4" data-res="HD" />
                     <% }%>
                 </video>
             </article>
@@ -75,12 +75,12 @@
             <div id="slider">  <br>
                 <%
                     List<Video> videoRecommander = Video.rechercheVideo(" ", " ", "recommandation");
-                    Video video = videoRecommander.get(0);
+                    for(Video video : videoRecommander){
                 %><section>
                     <video id="video<%out.print(video.getId());%>" controls preload="none" poster="" width="200" height="100" class="video-js vjs-default-skin">
                         <source src="<% out.print(video.getEmplacement());%>" type="video/mp4" data-res="HD" >
                     </video>
-                </section> </div>
+                </section> <% } %></div> 
             <script type="text/javascript">
                 vjs('home_video', {
                     plugins: {

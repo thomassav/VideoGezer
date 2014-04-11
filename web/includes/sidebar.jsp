@@ -19,6 +19,7 @@
                 if(session.getAttribute("profil") != null){
                     out.println("Bonjour "+ session.getAttribute("profil").toString());
                     out.println("<form action='Deconnexion' method='post' ><input type='hidden' name='deco' value='1'/><input type='submit' value='Me deconnecter'/></form>");
+                    %> <li><a href='Profil'>Profil</a></li><%
                 }
                 else out.println("<li class='current_page_item'><a href='Identification.jsp'>Connexion</a></li>");                
             %>

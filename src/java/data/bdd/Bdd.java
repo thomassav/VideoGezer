@@ -26,7 +26,7 @@ public class Bdd {
 	}
 
 	private static void createBdd(){
-		bdd =  new GraphDatabaseFactory().newEmbeddedDatabase( "C:\\Users\\Ervin\\Documents\\Neo4j\\videogezerTestV1.graphdb" );
+		bdd =  new GraphDatabaseFactory().newEmbeddedDatabase( "C:\\Users\\Ervin\\Documents\\Neo4j\\VideoGezerProd2.graphdb" );
                 requete= new ExecutionEngine(bdd, StringLogger.SYSTEM);
 		/*bdd = new GraphDatabaseFactory().
         newEmbeddedDatabaseBuilder( "db/test" ).
