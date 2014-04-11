@@ -1,16 +1,13 @@
 package data.bdd;
 
-
-
 import org.neo4j.cypher.ExecutionEngine;
 import org.neo4j.cypher.ExecutionResult;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
-import org.neo4j.graphdb.factory.GraphDatabaseSettings;
 import org.neo4j.kernel.impl.util.StringLogger;
 
-
+System.out.println("test");
 
 public class Bdd {
 	private static GraphDatabaseService bdd = null;
