@@ -1,0 +1,18 @@
+Pour la recommandation de video :
+    faire une propostion sur :
+            le proprietaire de la video
+            mot clé
+            catégorie de vidéo
+            vues
+            
+
+ou
+
+MATCH (me { name: 'Joe' })-[:favorite]->(stuff)<-[:favorite]-(person)
+WHERE NOT (me)-[:friend]-(person)
+RETURN person.name, count(stuff)
+ORDER BY count(stuff) DESC
+
+
+Requete pour les recommandation
+match (v:Video {dateUpload:1396114369398})-[:MOTCLE]->(stuff)<-[:MOTCLE]-(Video) where not (v)-[:MOTCLE]->(v) return Video, count(stuff) order by count(stuff) desc
